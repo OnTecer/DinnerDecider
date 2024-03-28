@@ -7,5 +7,10 @@
         "bread",
         "peanut butter",
         "jelly"
-    ]
+    ],
+
+    "settings": {
+        "food_rating_is_stored": false,
+        "health_rating_is_stored": false
+    }
 }
