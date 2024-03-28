@@ -3,13 +3,13 @@ from collections import UserDict
 
 
 class JsonReaderAndWriter(UserDict):
-    def __init__(self, filepath="recipes.json"):
+    def __init__(self, filepath="recipes.json") -> None:
         super().__init__()
-        self.filepath = filepath
+        self.filepath: str = filepath
         rawData: str = open(filepath, "r").read()
         self.data = json.loads(rawData)
 
-    def save(self):
+    def save(self) -> None:
         with open(self.filepath, "w") as outfile:
             new_raw_data = json.dumps(self.data, indent=4)
             outfile.write(new_raw_data)

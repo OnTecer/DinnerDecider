@@ -1,10 +1,9 @@
 {
-    "recipe1": 23,
-    "recipe2": {
-        "ingredients": [
-            "rice",
-            "planes"
-        ],
-        "sickos": false
+    "recipes": [
+        {}
+    ],
+
+    "settings": {
+
     }
 }
