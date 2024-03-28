@@ -1,9 +1,11 @@
 {
     "recipes": [
-        {}
+        {"name": "PB&J", "ingredients": ["bread", "peanut butter", "jelly"]}
     ],
 
-    "settings": {
-
-    }
+    "known_ingredients": [
+        "bread",
+        "peanut butter",
+        "jelly"
+    ]
 }
