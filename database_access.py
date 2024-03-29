@@ -16,7 +16,7 @@ class DatabaseAccesser(UserDict):
             outfile.write(new_raw_data)
 
     # These are required:
-    # "name": str, "ingredients": list[str], "minutes_to_make": int, "date_last_eaten": date
+    # "name": str, "ingredients": list[str], "minutes_to_make": int, "date_last_eaten": str (str format "yy-mm-dd")
     # These are only required if they are turned on in settings, and are on a scale of 0 to 20
     # "food_rating": int, "health_rating": int
     def recipe_is_valid(self, recipe: dict) -> bool:
@@ -37,7 +37,13 @@ class DatabaseAccesser(UserDict):
 
         elif "date_last_eaten" not in recipe:
             return False
-        elif recipe["date_last_eaten"] is not date:
+        elif recipe["date_last_eaten"] is not str:
+            return False
+        elif not (
+            recipe["date_last_eaten"][0].isdigit() and recipe["date_last_eaten"][1].isdigit()
+            and recipe["date_last_eaten"][3].isdigit() and recipe["date_last_eaten"][4].isdigit()
+            and recipe["date_last_eaten"][6].isdigit() and recipe["date_last_eaten"][7].isdigit()
+        ):
             return False
 
         elif self.data["settings"]["food_rating_is_stored"]:
