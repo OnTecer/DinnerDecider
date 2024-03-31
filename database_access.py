@@ -11,9 +11,9 @@ class DatabaseAccesser(UserDict):
         self.data = json.loads(rawData)
 
     def save(self) -> None:
-        with open(self.filepath, "w") as outfile:
+        with open(self.filepath, "w") as out_file:
             new_raw_data = json.dumps(self.data, indent=4)
-            outfile.write(new_raw_data)
+            out_file.write(new_raw_data)
 
     # These are required:
     # "name": str, "ingredients": list[str], "minutes_to_make": int, "date_last_eaten": str (str format "yy-mm-dd")
@@ -75,6 +75,11 @@ class DatabaseAccesser(UserDict):
                 return None
 
     @staticmethod
+    def convert_date_string_to_datetime(date_text: str) -> date:
+        date_text = "20" + date_text
+        return date(int(date_text[0:4]), int(date_text[5:7]), int(date_text[8:10]))
+
+    @staticmethod
     def __remove_time_of_day_from_date(self, raw_date: str) -> str:
         comma_index: int = raw_date.index(",")
         deconstucted_raw_date: list[str] = list(raw_date)
@@ -123,3 +128,5 @@ if __name__ == "__main__":
     print(todayss_date, type(todayss_date))
     print(abs(todayss_date - date(2023, 2, 27)))
     print(type(abs(todayss_date - date(2023, 2, 27))))
+
+    print(DB.convert_date_string_to_datetime("21-02-27").month)
