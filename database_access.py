@@ -113,8 +113,9 @@ class DatabaseAccesser(UserDict):
         print("\t" + "time to make: " + minutes_to_make + " minutes")
 
         todays_date: date = date.today()
-
-        print("\t" + "days since last eaten: " + str(self.data["recipes"][""]))
+        date_last_eaten: date = self.convert_date_string_to_datetime(self.data["recipes"]["date_last_eaten"])
+        days_since_last_eaten: str = str(abs(date_last_eaten - todays_date))
+        print("\t" + "days since last eaten: " + days_since_last_eaten)
 
     def print_all_recipes(self) -> None:
         for recipe in self.data["recipes"]:
