@@ -18,9 +18,14 @@ class DatabaseAccesser(UserDict):
     def get_setting(self, setting_name: str) -> bool:
         return self.data["settings"][setting_name]
 
-
     def set_setting(self, setting_name: str, set_as: bool) -> None:
         self.data["settings"][setting_name] = set_as
+
+    def get_recipe(self, recipe_name: str) -> dict:
+        return self.data["recipes"][recipe_name]
+
+    def set_recipe(self, recipe_name: str, set_as: dict) -> None:
+        self.data["recipes"][recipe_name] = set_as
 
     # These are required:
     # "name": str, "ingredients": list[str], "minutes_to_make": int, "date_last_eaten": str (str format "yy-mm-dd")
@@ -108,7 +113,7 @@ class DatabaseAccesser(UserDict):
 
         return ingredient_list
 
-    def print_recipe(self, recipe: dict[str]) -> None:
+    def print_recipe(self, recipe: dict) -> None:
         name: str = self.data["recipes"][recipe]["name"]
         print(name + ":")
 
@@ -123,8 +128,6 @@ class DatabaseAccesser(UserDict):
         date_last_eaten: date = self.convert_date_string_to_date(self.data["recipes"]["date_last_eaten"])
         days_since_last_eaten: str = str(abs(todays_date - date_last_eaten))
         print("\t" + "days since last eaten: " + days_since_last_eaten)
-
-        if
 
     def print_all_recipes(self) -> None:
         for recipe in self.data["recipes"]:
@@ -141,6 +144,3 @@ if __name__ == "__main__":
     print(type(time_delta))
     print(str(time_delta))
     print(type(str(time_delta)))
-
-
-
