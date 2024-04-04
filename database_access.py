@@ -15,6 +15,13 @@ class DatabaseAccesser(UserDict):
             new_raw_data = json.dumps(self.data, indent=4)
             out_file.write(new_raw_data)
 
+    def get_setting(self, setting_name: str) -> bool:
+        return self.data["settings"][setting_name]
+
+
+    def set_setting(self, setting_name: str, set_as: bool) -> None:
+        self.data["settings"][setting_name] = set_as
+
     # These are required:
     # "name": str, "ingredients": list[str], "minutes_to_make": int, "date_last_eaten": str (str format "yy-mm-dd")
     # These are only required if they are turned on in settings, and are on a scale of 0 to 20
@@ -75,7 +82,7 @@ class DatabaseAccesser(UserDict):
                 return None
 
     @staticmethod
-    def convert_date_string_to_datetime(date_text: str) -> date:
+    def convert_date_string_to_date(date_text: str) -> date:
         date_text = "20" + date_text
         return date(int(date_text[0:4]), int(date_text[5:7]), int(date_text[8:10]))
 
@@ -113,8 +120,11 @@ class DatabaseAccesser(UserDict):
         print("\t" + "time to make: " + minutes_to_make + " minutes")
 
         todays_date: date = date.today()
+        date_last_eaten: date = self.convert_date_string_to_date(self.data["recipes"]["date_last_eaten"])
+        days_since_last_eaten: str = str(abs(todays_date - date_last_eaten))
+        print("\t" + "days since last eaten: " + days_since_last_eaten)
 
-        print("\t" + "days since last eaten: " + str(self.data["recipes"][""]))
+        if
 
     def print_all_recipes(self) -> None:
         for recipe in self.data["recipes"]:
@@ -126,7 +136,11 @@ if __name__ == "__main__":
     DB: DatabaseAccesser = DatabaseAccesser()
     todayss_date = date.today()
     print(todayss_date, type(todayss_date))
-    print(abs(todayss_date - date(2023, 2, 27)))
-    print(type(abs(todayss_date - date(2023, 2, 27))))
+    time_delta = abs(todayss_date - date(2023, 2, 27))
+    print(time_delta)
+    print(type(time_delta))
+    print(str(time_delta))
+    print(type(str(time_delta)))
 
-    print(DB.convert_date_string_to_datetime("21-02-27").month)
+
+
