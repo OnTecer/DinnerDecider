@@ -107,27 +107,41 @@ class DatabaseAccesser(UserDict):
     @staticmethod
     def __list_ingredients(ingredients: list[str]) -> str:
         ingredient_list: str = ""
-        for ingredient in range(len(ingredients) - 2):
+        for ingredient in range(len(ingredients) - 1):
             ingredient_list += ingredients[ingredient] + ", "
         ingredient_list += ingredients[len(ingredients) - 1]
 
         return ingredient_list
 
     def print_recipe(self, recipe: dict) -> None:
-        name: str = self.data["recipes"][recipe]["name"]
-        print(f"{name}:")
+        print(f"{recipe['name']}:")
 
         ingredients_raw: list[str] = recipe["ingredients"]
         ingredients_listed_out: str = self.__list_ingredients(ingredients_raw)
         print(f"\tingredients: {ingredients_listed_out}")
 
-        minutes_to_make: str = str(recipe["minutes_to_make"])
-        print(f"\ttime to make: {minutes_to_make} minutes")
+        print(f"\ttime to make: {recipe['minutes_to_make']} minutes")
 
         todays_date: date = date.today()
         date_last_eaten: date = self.convert_date_string_to_date(recipe["date_last_eaten"])
         days_since_last_eaten: str = str(abs(date_last_eaten - todays_date))
         print(f"\tdays since last eaten: {days_since_last_eaten}")
+
+        # Check if we have the setting turned on for food rating
+        if self.get_setting("food_rating_is_stored"):
+            # Check if food rating exists, if so then print it, otherwise, notify the user
+            if "food_rating" in recipe:
+                print(f"\tfood rating: {recipe['food_rating']}")
+            else:
+                print(f"\tfood rating: FOOD RATING DOES NOT EXIST FOR THIS RECIPE, OR IS NOT VALID, PLEASE GIVE IT A VALID RATING")
+
+        # Check if we have the setting turned on for health rating
+        if self.get_setting("health_rating_is_stored"):
+            # Check if food rating exists, if so then print it, otherwise, notify the user
+            if "health_rating" in recipe:
+                print(f"\thealth rating: {recipe['health_rating']}")
+            else:
+                print(f"\thealth rating: HEALTH RATING DOES NOT EXIST FOR THIS RECIPE, OR IS NOT VALID, PLEASE GIVE IT A VALID RATING")
 
     def print_all_recipes(self) -> None:
         for recipe in self.data["recipes"]:
@@ -138,10 +152,13 @@ class DatabaseAccesser(UserDict):
 # Code for testing
 if __name__ == "__main__":
     DB: DatabaseAccesser = DatabaseAccesser()
-    todayss_date = date.today()
-    print(todayss_date, type(todayss_date))
-    time_delta = abs(todayss_date - date(2023, 2, 27))
-    print(time_delta)
-    print(type(time_delta))
-    print(str(time_delta))
-    print(type(str(time_delta)))
+    DB.print_recipe(
+        {
+            "name": "Testing Testing",
+            "ingredients": ["code", "files", "etc"],
+            "minutes_to_make": 3,
+            "date_last_eaten": "24-04-03",
+            "food_rating": 4,
+            "health_rating": 9
+        }
+    )
