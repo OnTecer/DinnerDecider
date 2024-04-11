@@ -147,7 +147,7 @@ class DatabaseAccesser(UserDict):
     def print_all_recipes(self) -> None:
         for recipe in self.data["recipes"]:
             self.print_recipe(recipe)
-            print("\n\n")
+            print("")
 
     def reload(self) -> None:
         rawData: str = open(self.filepath, "r").read()
