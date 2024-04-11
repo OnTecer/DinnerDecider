@@ -18,6 +18,7 @@ def main() -> None:
 def ask_for_command() -> str:
     raw_command: str = input("type in your command:  ")
     final_command: str = ""
+    # Remove spaces
     for char in range(len(raw_command)):
         if raw_command[char] == " ":
             pass
@@ -49,6 +50,16 @@ def intro() -> None:
         """
     )
 
+
+def remove_spaces(raw_text: str) -> str:
+    final_text: str = ""
+    for char in range(len(raw_text)):
+        if raw_text[char] == " ":
+            pass
+        else:
+            final_text += raw_text[char]
+
+    return final_text
 
 ##############################################################################
 # Commands
@@ -92,7 +103,7 @@ def command_show() -> None:
 
 # changes the settings
 def command_modify() -> None:
-    pass
+    setting_name: str = print()
 
 
 # quits the program
