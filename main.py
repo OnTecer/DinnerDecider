@@ -1,5 +1,7 @@
 from database_access import *
 
+DB: DatabaseAccesser = DatabaseAccesser("recipes.json")
+
 
 ##############################################################################
 # Main
@@ -24,8 +26,8 @@ def ask_for_command() -> str:
 
     try:
         eval(f"command_{final_command}()")
-    except SyntaxError:
-        print(f"{final_command} is not a command")
+    except:
+        print(f"\"{final_command}\" is not a command")
 
     return final_command
 
@@ -51,38 +53,49 @@ def intro() -> None:
 ##############################################################################
 # Commands
 ##############################################################################
+
+# decide what you should eat today
 def command_decide() -> None:
     pass
 
 
+# adds a new recipe to the list of recipes
 def command_add() -> None:
     pass
 
 
+# deletes a recipe from the list of recipes
 def command_delete() -> None:
     pass
 
 
+# finds a recipe from the list of recipes
 def command_find() -> None:
     pass
 
 
+# changes a recipe
 def command_change() -> None:
     pass
 
 
+# changes the days since last eaten for a recipe to 0
 def command_eat() -> None:
     pass
 
 
+# shows settings
 def command_show() -> None:
-    pass
+    print(f"Use taste ratings: {DB.get_setting('taste_rating_is_stored')}")
+    print(f"Use health ratings: {DB.get_setting('health_rating_is_stored')}")
 
 
+# changes the settings
 def command_modify() -> None:
     pass
 
 
+# quits the program
 def command_quit() -> None:
     print("Quitting program")
     quit()

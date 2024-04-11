@@ -30,7 +30,7 @@ class DatabaseAccesser(UserDict):
     # These are required:
     # "name": str, "ingredients": list[str], "minutes_to_make": int, "date_last_eaten": str (str format "yy-mm-dd")
     # These are only required if they are turned on in settings, and are on a scale of 0 to 20
-    # "food_rating": int, "health_rating": int
+    # "taste_rating": int, "health_rating": int
     def recipe_is_valid(self, recipe: dict) -> bool:
         if "name" not in recipe:
             return False
@@ -58,12 +58,12 @@ class DatabaseAccesser(UserDict):
         ):
             return False
 
-        elif self.data["settings"]["food_rating_is_stored"]:
-            if "food_rating" not in recipe:
+        elif self.data["settings"]["taste_rating_is_stored"]:
+            if "taste_rating" not in recipe:
                 return False
-            elif recipe["food_rating"] is not int:
+            elif recipe["taste_rating"] is not int:
                 return False
-            elif not 0 <= recipe["food_rating"] <= 20:
+            elif not 0 <= recipe["taste_rating"] <= 20:
                 return False
 
         elif self.data["settings"]["health_rating_is_stored"]:
@@ -127,17 +127,17 @@ class DatabaseAccesser(UserDict):
         days_since_last_eaten: str = str(abs(date_last_eaten - todays_date))
         print(f"\tdays since last eaten: {days_since_last_eaten}")
 
-        # Check if we have the setting turned on for food rating
-        if self.get_setting("food_rating_is_stored"):
-            # Check if food rating exists, if so then print it, otherwise, notify the user
-            if "food_rating" in recipe:
-                print(f"\tfood rating: {recipe['food_rating']}")
+        # Check if we have the setting turned on for taste rating
+        if self.get_setting("taste_rating_is_stored"):
+            # Check if taste rating exists, if so then print it, otherwise, notify the user
+            if "taste_rating" in recipe:
+                print(f"\ttaste rating: {recipe['taste_rating']}")
             else:
-                print(f"\tfood rating: FOOD RATING DOES NOT EXIST FOR THIS RECIPE, OR IS NOT VALID, PLEASE GIVE IT A VALID RATING")
+                print(f"\ttaste rating: TASTE RATING DOES NOT EXIST FOR THIS RECIPE, OR IS NOT VALID, PLEASE GIVE IT A VALID RATING")
 
         # Check if we have the setting turned on for health rating
         if self.get_setting("health_rating_is_stored"):
-            # Check if food rating exists, if so then print it, otherwise, notify the user
+            # Check if taste rating exists, if so then print it, otherwise, notify the user
             if "health_rating" in recipe:
                 print(f"\thealth rating: {recipe['health_rating']}")
             else:
@@ -154,11 +154,11 @@ if __name__ == "__main__":
     DB: DatabaseAccesser = DatabaseAccesser()
     DB.print_recipe(
         {
-            "name": "Testing Testing",
-            "ingredients": ["code", "files", "etc"],
+            "name"           : "Testing Testing",
+            "ingredients"    : ["code", "files", "etc"],
             "minutes_to_make": 3,
             "date_last_eaten": "24-04-03",
-            "food_rating": 4,
-            "health_rating": 9
+            "taste_rating"   : 4,
+            "health_rating"  : 9
         }
     )

@@ -10,7 +10,7 @@
     ],
 
     "settings": {
-        "food_rating_is_stored": false,
+        "taste_rating_is_stored": true,
         "health_rating_is_stored": false
     }
 }
