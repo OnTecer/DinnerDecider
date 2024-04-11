@@ -14,6 +14,7 @@ class DatabaseAccesser(UserDict):
         with open(self.filepath, "w") as out_file:
             new_raw_data = json.dumps(self.data, indent=4)
             out_file.write(new_raw_data)
+        self.reload()
 
     def get_setting(self, setting_name: str) -> bool:
         return self.data["settings"][setting_name]
@@ -147,6 +148,10 @@ class DatabaseAccesser(UserDict):
         for recipe in self.data["recipes"]:
             self.print_recipe(recipe)
             print("\n\n")
+
+    def reload(self) -> None:
+        rawData: str = open(self.filepath, "r").read()
+        self.data = json.loads(rawData)
 
 
 # Code for testing

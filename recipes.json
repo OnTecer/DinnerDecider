@@ -1,16 +1,25 @@
 {
     "recipes": [
-        {"name": "PB&J", "ingredients": ["bread", "peanut butter", "jelly"]}
+        {
+            "name": "Testing Testing",
+            "ingredients": [
+                "code",
+                "files",
+                "etc"
+            ],
+            "minutes_to_make": 3,
+            "date_last_eaten": "24-04-03",
+            "taste_rating": 4,
+            "health_rating": 9
+        }
     ],
-
     "known_ingredients": [
         "bread",
         "peanut butter",
         "jelly"
     ],
-
     "settings": {
         "taste_rating_is_stored": true,
-        "health_rating_is_stored": false
+        "health_rating_is_stored": true
     }
 }

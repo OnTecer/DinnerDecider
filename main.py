@@ -16,21 +16,13 @@ def main() -> None:
 # Processes
 ##############################################################################
 def ask_for_command() -> str:
-    raw_command: str = input("type in your command:  ")
-    final_command: str = ""
-    # Remove spaces
-    for char in range(len(raw_command)):
-        if raw_command[char] == " ":
-            pass
-        else:
-            final_command += raw_command[char]
-
+    command: str = remove_spaces(input("type in your command:  ")).lower()
     try:
-        eval(f"command_{final_command}()")
+        eval(f"command_{command}()")
     except:
-        print(f"\"{final_command}\" is not a command")
+        print(f"\"{command}\" is not a command")
 
-    return final_command
+    return command
 
 
 def intro() -> None:
@@ -100,10 +92,41 @@ def command_show() -> None:
     print(f"Use taste ratings: {DB.get_setting('taste_rating_is_stored')}")
     print(f"Use health ratings: {DB.get_setting('health_rating_is_stored')}")
 
+    print("")
+
 
 # changes the settings
 def command_modify() -> None:
-    setting_name: str = print()
+    global DB
+    command_show()
+    setting_name: str = remove_spaces(input("What setting would you like to change?:  ")).lower()
+    change_to_value: str = remove_spaces(input("What would you like to change it to?:  ")).lower()
+    if setting_name == "usetasteratings":
+        if change_to_value == "true":
+            DB.set_setting("taste_rating_is_stored", True)
+        elif change_to_value == "false":
+            DB.set_setting("taste_rating_is_stored", False)
+        else:
+            print(f"You cannot change the taste rating to \"{change_to_value}\"")
+            return None
+    elif setting_name == "usehealthratings":
+        if change_to_value == "true":
+            DB.set_setting("health_rating_is_stored", True)
+        elif change_to_value == "false":
+            DB.set_setting("health_rating_is_stored", False)
+        else:
+            print(f"You cannot change the health rating to \"{change_to_value}\"")
+            return None
+    else:
+        print(f"\"{setting_name}\" is not a valid setting")
+        return None
+
+    DB.save()
+
+    command_show()
+
+    print("")
+
 
 
 # quits the program
