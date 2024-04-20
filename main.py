@@ -1,4 +1,5 @@
 from database_access import *
+from datetime import date
 
 DB: DatabaseAccesser = DatabaseAccesser("recipes.json")
 
@@ -110,7 +111,15 @@ def command_change_recipe() -> None:
 
 # changes the days since last eaten for a recipe to 0
 def command_eat() -> None:
-    pass
+    recipe_name: str = input("What recipe would you like to eat?:  ")
+    new_recipe: dict = DB.get_recipe(recipe_name)
+    todays_date: str = f"{date.today().year}-{date.today().month}-{date.today().day}"
+    todays_date = make_date_standard(todays_date)
+
+    print(todays_date)
+    new_recipe["date_last_eaten"] = todays_date
+    DB.set_recipe(recipe_name, new_recipe)
+    DB.save()
 
 
 # shows settings

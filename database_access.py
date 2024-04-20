@@ -23,13 +23,27 @@ class DatabaseAccesser(UserDict):
         self.data["settings"][setting_name] = set_as
 
     def get_recipe(self, recipe_name: str) -> dict:
-        return self.data["recipes"][recipe_name]
+        recipes: list = self.data["recipes"]
+        recipe_iterator = 0
+        while recipe_iterator < len(recipes) + 1:
+            if recipes[recipe_iterator]["name"] == recipe_name:
+                break
+            recipe_iterator += 1
+
+        return recipes[recipe_iterator]
 
     def set_recipe(self, recipe_name: str, set_as: dict) -> None:
-        self.data["recipes"][recipe_name] = set_as
+        recipes: list = self.data["recipes"]
+        recipe_iterator = 0
+        while recipe_iterator < len(recipes) + 1:
+            if recipes[recipe_iterator]["name"] == recipe_name:
+                break
+            recipe_iterator += 1
+
+        self.data["recipes"][recipe_iterator] = set_as
 
     # These are required:
-    # "name": str, "ingredients": list[str], "minutes_to_make": int, "date_last_eaten": str (str format "yy-mm-dd")
+    # "name": str, "ingredients": list[str], "minutes_to_make": int, "date_last_eaten": str (str format "yyyy-mm-dd")
     # These are only required if they are turned on in settings, and are on a scale of 0 to 20
     # "taste_rating": int, "health_rating": int
     def recipe_is_valid(self, recipe: dict) -> bool:
@@ -89,7 +103,6 @@ class DatabaseAccesser(UserDict):
 
     @staticmethod
     def convert_date_string_to_date(date_text: str) -> date:
-        date_text = "20" + date_text
         return date(int(date_text[0:4]), int(date_text[5:7]), int(date_text[8:10]))
 
     @staticmethod
@@ -154,16 +167,32 @@ class DatabaseAccesser(UserDict):
         self.data = json.loads(rawData)
 
 
+def make_date_standard(original_date: str) -> str:
+    divided_original_date: list[str] = original_date.split("-")
+    if len(divided_original_date) < 3:
+        return "err"
+
+    if len(divided_original_date[0]) > len("XXXX"):
+        return "err"
+    if len(divided_original_date[0]) < len("XXXX"):
+        divided_original_date[0] = "0" + divided_original_date[0]
+
+    if len(divided_original_date[1]) > len("XX"):
+        return "err"
+    if len(divided_original_date[1]) < len("XX"):
+        divided_original_date[1] = "0" + divided_original_date[1]
+
+    if len(divided_original_date[2]) > len("XX"):
+        return "err"
+    if len(divided_original_date[2]) < len("XX"):
+        divided_original_date[2] = "0" + divided_original_date[2]
+
+    todays_date: str = f"{divided_original_date[0]}-{divided_original_date[1]}-{divided_original_date[2]}"
+
+    return todays_date
+
+
 # Code for testing
 if __name__ == "__main__":
     DB: DatabaseAccesser = DatabaseAccesser()
-    DB.print_recipe(
-        {
-            "name"           : "Testing Testing",
-            "ingredients"    : ["code", "files", "etc"],
-            "minutes_to_make": 3,
-            "date_last_eaten": "24-04-03",
-            "taste_rating"   : 4,
-            "health_rating"  : 9
-        }
-    )
+    print(DB.get_recipe("Testing Testing1"))
