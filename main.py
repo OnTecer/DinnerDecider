@@ -48,17 +48,18 @@ def intro() -> None:
     print(
         """
         type in any of the following commands:
-        
-        decide (decide what you should eat today)
-        add (adds a new recipe to the list of recipes)
-        delete (deletes a recipe from the list of recipes)
-        show recipes (shows all recipes)
-        find (finds a recipe from the list of recipes)
-        change recipe (changes a recipe)
-        eat (changes the days since last eaten for a recipe to 0)
-        show settings (shows settings)
-        change setting (changes the settings)
-        quit (quits the program)
+        command              description
+        _______________      ______________________________________________________
+        decide               decide what you should eat today
+        add                  adds a new recipe to the list of recipes
+        delete               deletes a recipe from the list of recipes
+        show recipes         shows all recipes
+        find                 finds a recipe from the list of recipes
+        change recipe        changes a recipe
+        eat                  changes the days since last eaten for a recipe to 0
+        show settings        shows settings
+        change setting       changes a setting
+        quit                 quits the program
         """
     )
 
