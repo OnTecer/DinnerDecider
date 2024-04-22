@@ -30,7 +30,10 @@ class DatabaseAccesser(UserDict):
                 break
             recipe_iterator += 1
 
-        return recipes[recipe_iterator]
+        if recipe_iterator < len(recipes):
+            return recipes[recipe_iterator]
+        else:
+            raise "Failed to find recipe; recipe does not exist"
 
     def set_recipe(self, recipe_name: str, set_as: dict) -> None:
         recipes: list = self.data["recipes"]
@@ -106,7 +109,10 @@ class DatabaseAccesser(UserDict):
         return date(int(date_text[0:4]), int(date_text[5:7]), int(date_text[8:10]))
 
     @staticmethod
-    def __remove_time_of_day_from_date(self, raw_date: str) -> str:
+    def __remove_time_of_day_from_date(
+        _this_variable_does_nothing_but_it_breaks_the_code_when_its_removed_and_i_dont_want_to_fix_it,
+        raw_date: str
+    ) -> str:
         comma_index: int = raw_date.index(",")
         deconstucted_raw_date: list[str] = list(raw_date)
         for char in range(comma_index, len(raw_date)):

@@ -102,7 +102,18 @@ def command_show_recipes() -> None:
 
 # finds a recipe from the list of recipes
 def command_find() -> None:
-    pass
+    recipe: dict
+    try:
+        recipe = DB.get_recipe(input("Enter recipe name: "))
+    except:
+        print(
+            "This recipe is not in the database. You may have made a typo or you may not have added the recipe to the database."
+        )
+        print("")
+        return
+
+    DB.print_recipe(recipe)
+    print("")
 
 
 # changes a recipe
