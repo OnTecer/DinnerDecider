@@ -10,6 +10,7 @@ DB: DatabaseAccesser = DatabaseAccesser("recipes.json")
 def main() -> None:
     intro()
     while True:
+        print("-----------------------------------------------------------------------------------------------------------")
         ask_for_command()
 
 
@@ -101,24 +102,57 @@ def command_show_recipes() -> None:
 
 
 # finds a recipe from the list of recipes
-def command_find() -> None:
+def command_find() -> str:
     recipe: dict
+    recipe_name: str = input("Enter recipe name:  ")
     try:
-        recipe = DB.get_recipe(input("Enter recipe name: "))
+        recipe = DB.get_recipe(recipe_name)
     except:
         print(
             "This recipe is not in the database. You may have made a typo or you may not have added the recipe to the database."
         )
         print("")
-        return
+        return None
 
     DB.print_recipe(recipe)
     print("")
+    return recipe_name
 
 
 # changes a recipe
 def command_change_recipe() -> None:
-    pass
+    recipe_name: str = command_find()
+    if recipe_name is None:
+        return
+
+    attribute_to_change: str = input("Which attribute do you want to change?:  ")
+
+    if attribute_to_change.lower() == "name":
+        new_name: str = input("What do you want to change the name to?:  ")
+        is_user_sure: str = input(f"Are you sure you want to change {recipe_name}'s name to {new_name}?:  ")
+        if is_user_sure.lower() == "yes":
+            new_recipe: dict = DB.get_recipe(recipe_name)
+            new_recipe["name"] = new_name
+            DB.set_recipe(recipe_name, new_recipe)
+            DB.save()
+            DB.reload()
+        else:
+            return
+
+    elif attribute_to_change.lower() == "ingredients":
+        hidden_command_change_ingredients(recipe_name)
+
+    elif attribute_to_change.lower() == "minutes to make":
+        pass
+
+    elif attribute_to_change.lower() == "date last eaten":
+        pass
+
+    elif attribute_to_change.lower() == "taste rating":
+        pass
+
+    elif attribute_to_change.lower() == "health rating":
+        pass
 
 
 # changes the days since last eaten for a recipe to 0
@@ -180,6 +214,42 @@ def command_change_setting() -> None:
 def command_quit() -> None:
     print("Quitting program")
     quit()
+
+
+def hidden_command_change_ingredients(recipe_name: str) -> None:
+    recipe: dict = DB.get_recipe(recipe_name)
+    ingredients: list = recipe["ingredients"]
+    action: str = input("Do you want to delete an ingredient (enter \"delete\"), change an ingredient (enter \"change\"), or add an ingredient (enter \"add\"?:  ")
+
+    if action == "delete":
+        print("ingredients:")
+        for ingredient in ingredients:
+            print(f"\t{ingredient}")
+        ingredient = input("What ingredient would you like to remove from this list?:  ")
+        if ingredient in ingredients:
+            del ingredients[ingredients.index(ingredient)]
+        else:
+            print("Ingredient not found, please try again.")
+            return
+
+    elif action == "add":
+        ingredients.append(input("What ingredient would you like to add?:  "))
+
+    elif action == "change":
+        print("ingredients:")
+        for ingredient in ingredients:
+            print(f"\t{ingredient}")
+        ingredient = input("What ingredient would you like to change from this list?:  ")
+        if ingredient in ingredients:
+            del ingredients[ingredients.index(ingredient)]
+        else:
+            print("Ingredient not found, please try again.")
+            return
+
+        ingredients.append(input("What would you like to change it to?:  "))
+
+    recipe["ingredients"] = ingredients
+    DB.set_recipe(recipe_name, recipe)
 
 
 ##############################################################################

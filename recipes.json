@@ -1,7 +1,7 @@
 {
     "recipes": [
         {
-            "name": "Testing Testing1",
+            "name": "tt1",
             "ingredients": [
                 "code",
                 "filles",
@@ -49,14 +49,14 @@
             "health_rating": 9
         },
         {
-            "name": "Testing Testing5",
+            "name": "tt1",
             "ingredients": [
                 "code",
-                "files",
+                "filles",
                 "etc"
             ],
-            "minutes_to_make": 3,
-            "date_last_eaten": "2024-04-03",
+            "minutes_to_make": 4,
+            "date_last_eaten": "2024-04-19",
             "taste_rating": 4,
             "health_rating": 9
         }

@@ -38,7 +38,7 @@ class DatabaseAccesser(UserDict):
     def set_recipe(self, recipe_name: str, set_as: dict) -> None:
         recipes: list = self.data["recipes"]
         recipe_iterator = 0
-        while recipe_iterator < len(recipes) + 1:
+        while recipe_iterator < len(recipes) - 1:
             if recipes[recipe_iterator]["name"] == recipe_name:
                 break
             recipe_iterator += 1
@@ -115,7 +115,7 @@ class DatabaseAccesser(UserDict):
     ) -> str:
         comma_index: int = raw_date.index(",")
         deconstucted_raw_date: list[str] = list(raw_date)
-        for char in range(comma_index, len(raw_date)):
+        for char in range(len(raw_date) - 1, comma_index, -1):
             del deconstucted_raw_date[char]
 
         final_date: str = ""
@@ -145,6 +145,10 @@ class DatabaseAccesser(UserDict):
         todays_date: date = date.today()
         date_last_eaten: date = self.convert_date_string_to_date(recipe["date_last_eaten"])
         days_since_last_eaten: str = str(abs(date_last_eaten - todays_date))
+        days_since_last_eaten = self.__remove_time_of_day_from_date(
+            None,
+            days_since_last_eaten
+        )
         print(f"\tdays since last eaten: {days_since_last_eaten}")
 
         # Check if we have the setting turned on for taste rating
