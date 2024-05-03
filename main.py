@@ -10,7 +10,7 @@ DB: DatabaseAccesser = DatabaseAccesser("recipes.json")
 def main() -> None:
     intro()
     while True:
-        print("-----------------------------------------------------------------------------------------------------------")
+        print("══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════")
         ask_for_command()
 
 
@@ -50,7 +50,7 @@ def intro() -> None:
         """
         type in any of the following commands:
         command              description
-        _______________      ______________________________________________________
+        ═══════════════      ══════════════════════════════════════════════════════
         decide               decide what you should eat today
         add                  adds a new recipe to the list of recipes
         delete               deletes a recipe from the list of recipes
@@ -112,7 +112,7 @@ def command_find() -> str:
             "This recipe is not in the database. You may have made a typo or you may not have added the recipe to the database."
         )
         print("")
-        return None
+        return
 
     DB.print_recipe(recipe)
     print("")
@@ -142,11 +142,69 @@ def command_change_recipe() -> None:
     elif attribute_to_change.lower() == "ingredients":
         hidden_command_change_ingredients(recipe_name)
 
-    elif attribute_to_change.lower() == "minutes to make":
-        pass
+    elif attribute_to_change.lower() == "time to make":
+        raw_new_minutes_to_make: str = input("What do you want to change the time to make to (in minutes)?:  ")
+        try:
+            new_minutes_to_make: int = int(raw_new_minutes_to_make)
+            new_recipe: dict = DB.get_recipe(recipe_name)
+            new_recipe["minutes_to_make"] = new_minutes_to_make
 
-    elif attribute_to_change.lower() == "date last eaten":
-        pass
+            DB.set_recipe(recipe_name, new_recipe)
+            DB.save()
+            DB.reload()
+        except ValueError:
+            print("Invalid number, please make sure that the number contains no spaces, commas, decimals, or any other characters except numbers.")
+        return
+
+    elif attribute_to_change.lower() == "days since last eaten":
+        date_or_time_since: str = input("Do you want to enter the date you last ate this (enter \"date\") or the days since you last ate (enter \"days since\") this?:  ")
+        if date_or_time_since.lower() == "date":
+            raw_year: str = input("What year did you last eat this in (yyyy)?:  ")
+            year: int
+            try:
+                test_year = int(raw_year)
+                if len(raw_year) == 4:
+                    year = test_year
+                else:
+                    print("Invalid year value")
+                    return
+            except ValueError:
+                print("Invalid number, please make sure that the number contains no spaces, commas, decimals, or any other characters.")
+                return
+
+            raw_month: str = input("What month did you last eat this in (mm)?:  ")
+            month: int
+            try:
+                test_month = int(raw_month)
+                if len(raw_month) == 2:
+                    month = test_month
+                else:
+                    print("Invalid month value")
+                    return
+            except ValueError:
+                print("Invalid number, please make sure that the number contains no spaces, commas, decimals, or any other characters.")
+                return
+
+            raw_day: str = input("What day did you last eat this in (dd)?:  ")
+            day: int
+            try:
+                test_day = int(raw_day)
+                if len(raw_day) == 2:
+                    day = test_day
+                else:
+                    print("Invalid day value")
+                    return
+            except ValueError:
+                print("Invalid number, please make sure that the number contains no spaces, commas, decimals, or any other characters.")
+                return
+
+            date_last_eaten: str = input(f"{year}-{month}-{day}")
+
+        elif date_or_time_since.lower() == "days since":
+            pass
+        else:
+            print(f"\"{date_or_time_since}\" is not a valid option")
+            return
 
     elif attribute_to_change.lower() == "taste rating":
         pass
