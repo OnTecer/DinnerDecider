@@ -160,45 +160,55 @@ def command_change_recipe() -> None:
         date_or_time_since: str = input("Do you want to enter the date you last ate this (enter \"date\") or the days since you last ate (enter \"days since\") this?:  ")
         if date_or_time_since.lower() == "date":
             raw_year: str = input("What year did you last eat this in (yyyy)?:  ")
-            year: int
+            year: str
             try:
                 test_year = int(raw_year)
-                if len(raw_year) == 4:
-                    year = test_year
+                if test_year < 2000:
+                    year = raw_year
+                    del raw_year
                 else:
-                    print("Invalid year value")
+                    print("Year value too low")
                     return
             except ValueError:
                 print("Invalid number, please make sure that the number contains no spaces, commas, decimals, or any other characters.")
                 return
 
             raw_month: str = input("What month did you last eat this in (mm)?:  ")
-            month: int
+            month: str
             try:
-                test_month = int(raw_month)
-                if len(raw_month) == 2:
-                    month = test_month
-                else:
-                    print("Invalid month value")
-                    return
+                # test_month = int(raw_month)
+                # if len(raw_month) == 2:
+                month = raw_month
+                del raw_month
+                # else:
+                #     print("Invalid month value")
+                #     return
             except ValueError:
                 print("Invalid number, please make sure that the number contains no spaces, commas, decimals, or any other characters.")
                 return
 
             raw_day: str = input("What day did you last eat this in (dd)?:  ")
-            day: int
+            day: str
             try:
-                test_day = int(raw_day)
-                if len(raw_day) == 2:
-                    day = test_day
-                else:
-                    print("Invalid day value")
-                    return
+                # test_day = int(raw_day)
+                # if len(raw_day) == 2:
+                day = raw_day
+                del raw_day
+                # else:
+                #     print("Invalid day value")
+                #     return
             except ValueError:
                 print("Invalid number, please make sure that the number contains no spaces, commas, decimals, or any other characters.")
                 return
 
-            date_last_eaten: str = input(f"{year}-{month}-{day}")
+            date_last_eaten: str = f"{year}-{month}-{day}"
+            date_last_eaten = make_date_standard(date_last_eaten)
+            new_recipe: dict = DB.get_recipe(recipe_name)
+            new_recipe["date_last_eaten"] = date_last_eaten
+
+            DB.set_recipe(recipe_name, new_recipe)
+            DB.save()
+            DB.reload()
 
         elif date_or_time_since.lower() == "days since":
             pass
